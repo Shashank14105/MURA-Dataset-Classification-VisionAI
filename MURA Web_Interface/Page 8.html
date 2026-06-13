@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Results - Performance Metrics</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 80px;
+            box-sizing: border-box;
+        }
+
+        /* Background Grid Pattern */
+        .bg-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header Section */
+        .header-section {
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #38bdf8;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-tag::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background-color: #38bdf8;
+        }
+
+        .main-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 40px;
+            flex: 1;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Left Column: Metrics Display */
+        .metrics-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Big Metric Cards */
+        .primary-metrics {
+            display: flex;
+            gap: 20px;
+        }
+
+        .big-metric-card {
+            flex: 1;
+            background-color: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-icon {
+            font-size: 24px;
+            color: #38bdf8;
+            margin-bottom: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .metric-value {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            color: #f8fafc;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .metric-label {
+            font-size: 14px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .metric-sub {
+            font-size: 13px;
+            color: #4ade80; /* Green */
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Kappa Score Bar */
+        .kappa-container {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.15);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .kappa-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .kappa-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            color: #bae6fd;
+        }
+
+        .kappa-score {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: #38bdf8;
+        }
+
+        .progress-track {
+            height: 12px;
+            background-color: rgba(56, 189, 248, 0.1);
+            border-radius: 6px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background-color: #38bdf8;
+            border-radius: 6px;
+            width: 70%; /* Represents 0.70 */
+        }
+        
+        .progress-markers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* Sensitivity Insight */
+        .insight-box {
+            background-color: rgba(56, 189, 248, 0.05);
+            border-left: 4px solid #38bdf8;
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .insight-text {
+            font-size: 16px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 0;
+        }
+        
+        .insight-highlight {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* Right Column: Chart & Notes */
+        .analysis-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .chart-container {
+            background-color: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            flex: 1;
+            position: relative;
+        }
+
+        .chart-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            color: #e2e8f0;
+            margin-bottom: 16px;
+        }
+
+        .notes-container {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(148, 163, 184, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .note-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .note-icon {
+            color: #f59e0b; /* Amber for caution/note */
+            font-size: 16px;
+            margin-top: 4px;
+        }
+        
+        .note-text h4 {
+            font-size: 14px;
+            color: #e2e8f0;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .note-text p {
+            font-size: 13px;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Callout Badges */
+        .callout-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<div class="bg-grid"></div>
+<div class="header-section">
+<div class="section-tag">Performance Evaluation</div>
+<h1 class="main-title">Results &amp; Model Performance</h1>
+</div>
+<div class="content-grid">
+<!-- Left Column -->
+<div class="metrics-column">
+<!-- Primary Metrics Row -->
+<div class="primary-metrics">
+<div class="big-metric-card">
+<div class="metric-icon">
+<i class="fa-solid fa-bullseye"></i>
+</div>
+<div class="metric-value">80.4%</div>
+<div class="metric-label">Accuracy</div>
+<div class="metric-sub">
+<i class="fa-solid fa-arrow-trend-up"></i>
+<span>Top Performance</span>
+</div>
+<div class="callout-badge">Overall</div>
+</div>
+<div class="big-metric-card">
+<div class="metric-icon">
+<i class="fa-solid fa-microscope"></i>
+</div>
+<div class="metric-value">0.82</div>
+<div class="metric-label">Sensitivity</div>
+<div class="metric-sub">
+<i class="fa-solid fa-check-double"></i>
+<span>High Recall</span>
+</div>
+<div class="callout-badge">Fractures</div>
+</div>
+</div>
+<!-- Kappa Score Section -->
+<div class="kappa-container">
+<div class="kappa-header">
+<div class="kappa-title">Cohen’s Kappa Score</div>
+<div class="kappa-score">0.71</div>
+</div>
+<div class="progress-track">
+<div class="progress-fill" style="width: 71%;"></div>
+</div>
+<div class="progress-markers">
+<span>0.0</span>
+<span>0.2</span>
+<span>0.4</span>
+<span>0.6 (Good)</span>
+<span>0.8 (Excellent)</span>
+<span>1.0</span>
+</div>
+<p style="margin: 12px 0 0 0; font-size: 13px; color: #94a3b8;">
+                    Achieved score falls within the <span style="color: #38bdf8;">0.60 – 0.75</span> range, indicating substantial agreement with radiologist ground truth.
+                </p>
+</div>
+<!-- Text Insight -->
+<div class="insight-box">
+<p class="insight-text">
+                    The model demonstrates <span class="insight-highlight">strong sensitivity</span> in detecting subtle fractures, reducing the risk of missed diagnoses in critical care settings.
+                </p>
+</div>
+</div>
+<!-- Right Column -->
+<div class="analysis-column">
+<!-- Body Part Chart -->
+<div class="chart-container">
+<div class="chart-title">Performance by Body Part (Kappa)</div>
+<div id="bodyPartChart" style="width: 100%; height: 220px;"></div>
+</div>
+<!-- Validation Notes -->
+<div class="notes-container">
+<div class="note-item">
+<i class="fa-solid fa-triangle-exclamation note-icon"></i>
+<div class="note-text">
+<h4>False Positive Monitoring</h4>
+<p>Specificity monitoring is crucial. The model occasionally flags benign irregularities as abnormal.</p>
+</div>
+</div>
+<div class="note-item">
+<i class="fa-solid fa-clipboard-check note-icon" style="color: #38bdf8;"></i>
+<div class="note-text">
+<h4>Validation Strategy</h4>
+<p>Results verified using 5-fold cross-validation to ensure robustness across different patient studies.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // ECharts Initialization for Body Part Performance
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartDom = document.getElementById('bodyPartChart');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            option = {
+                textStyle: {
+                    fontFamily: 'Inter, sans-serif'
+                },
+                grid: {
+                    top: '10%',
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Wrist', 'Hand', 'Shoulder', 'Elbow', 'Finger', 'Forearm', 'Humerus'],
+                    axisLine: { lineStyle: { color: '#475569' } },
+                    axisLabel: { color: '#94a3b8', fontSize: 11, interval: 0 }
+                },
+                yAxis: {
+                    type: 'value',
+                    min: 0.5,
+                    max: 0.9,
+                    splitLine: { lineStyle: { color: 'rgba(56, 189, 248, 0.1)', type: 'dashed' } },
+                    axisLabel: { color: '#64748b' }
+                },
+                series: [
+                    {
+                        data: [0.78, 0.72, 0.69, 0.75, 0.65, 0.70, 0.68],
+                        type: 'bar',
+                        barWidth: '40%',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: '#38bdf8' },
+                                { offset: 1, color: 'rgba(56, 189, 248, 0.1)' }
+                            ]),
+                            borderRadius: [4, 4, 0, 0]
+                        },
+                        label: {
+                            show: true,
+                            position: 'top',
+                            color: '#bae6fd',
+                            fontSize: 10,
+                            formatter: '{c}'
+                        }
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+        });
+    </script>
+</body>
+</html>

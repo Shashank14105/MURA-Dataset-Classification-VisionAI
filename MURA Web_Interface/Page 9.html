@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Explainability - Image Heatmap</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 80px;
+            box-sizing: border-box;
+        }
+
+        /* Background Grid Pattern - Using solid lines to avoid gradient restriction */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        .bg-dot {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background-color: rgba(56, 189, 248, 0.2);
+            border-radius: 50%;
+        }
+
+        /* Header Section */
+        .header-section {
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #38bdf8;
+            margin-bottom: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-tag::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background-color: #38bdf8;
+        }
+
+        .main-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 42px;
+            font-weight: 700;
+            color: #f8fafc;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            display: flex;
+            flex: 1;
+            gap: 50px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Visual Column (Left) */
+        .visual-column {
+            flex: 1.4;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(30, 41, 59, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            position: relative;
+        }
+
+        .image-card {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .img-container {
+            width: 100%;
+            height: 340px;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+        }
+
+        .xray-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+        }
+
+        /* Heatmap Simulation without Gradients */
+        .heatmap-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            mix-blend-mode: hard-light; /* or overlay */
+            opacity: 0.8;
+        }
+
+        .heat-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.7;
+        }
+
+        .blob-red {
+            background-color: #ef4444; /* Red-500 */
+            width: 120px;
+            height: 120px;
+            top: 40%;
+            left: 45%;
+        }
+
+        .blob-yellow {
+            background-color: #eab308; /* Yellow-500 */
+            width: 80px;
+            height: 80px;
+            top: 45%;
+            left: 50%;
+            opacity: 0.9;
+        }
+        
+        .blob-blue {
+            background-color: #3b82f6; /* Blue-500 */
+            width: 150px;
+            height: 150px;
+            top: 30%;
+            left: 30%;
+            opacity: 0.3;
+        }
+
+        .img-caption {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            color: #94a3b8;
+            background-color: rgba(15, 23, 42, 0.6);
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid rgba(148, 163, 184, 0.1);
+        }
+
+        .arrow-divider {
+            color: #38bdf8;
+            font-size: 24px;
+            opacity: 0.6;
+        }
+
+        /* Text Column (Right) */
+        .text-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .info-block {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .info-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .icon-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: rgba(56, 189, 248, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #38bdf8;
+            font-size: 18px;
+        }
+
+        .info-text {
+            font-size: 15px;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 0;
+            padding-left: 52px; /* Align with text start */
+        }
+
+        .highlight {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        /* Color Bar Legend */
+        .legend-container {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: rgba(15, 23, 42, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.1);
+            padding-left: 52px;
+        }
+
+        .legend-bar {
+            height: 12px;
+            width: 100%;
+            border-radius: 6px;
+            background-color: #334155;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+        }
+
+        /* Simulating gradient with solid blocks to avoid restrictions */
+        .lb-1 { width: 20%; background-color: #3b82f6; } /* Low */
+        .lb-2 { width: 20%; background-color: #06b6d4; }
+        .lb-3 { width: 20%; background-color: #22c55e; }
+        .lb-4 { width: 20%; background-color: #eab308; }
+        .lb-5 { width: 20%; background-color: #ef4444; } /* High */
+
+        .legend-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Floating Badge */
+        .trust-badge {
+            position: absolute;
+            top: -15px;
+            right: 30px;
+            background-color: #0f172a;
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style><link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Open%20Sans:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Google%20Sans:wght@400&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Noto%20Sans%20JP:wght@400&amp;display=swap" rel="stylesheet"></head>
+<body style="">
+<div class="slide-container">
+<!-- Background Pattern -->
+<div class="bg-pattern">
+<!-- Manually placed dots to create a tech texture -->
+<div class="bg-dot" style="top: 10%; left: 10%;"></div>
+<div class="bg-dot" style="top: 10%; left: 90%;"></div>
+<div class="bg-dot" style="bottom: 10%; left: 10%;"></div>
+<div class="bg-dot" style="bottom: 10%; left: 90%;"></div>
+<div class="bg-dot" style="top: 50%; left: 50%;"></div>
+</div>
+<div class="header-section">
+<div class="section-tag">Model Transparency</div>
+<h1 class="main-title">Explainability: Grad-CAM Visualization</h1>
+</div>
+<div class="content-wrapper">
+<!-- Left: Visual Comparison -->
+<div class="visual-column">
+<div class="trust-badge">
+<i class="fa-solid fa-shield-halved"></i>
+                Clinical Validation
+            </div>
+<!-- Input Image -->
+<div class="image-card">
+
+<div class="img-caption">Original</div><img src="https://page.gensparksite.com/get_upload_url/fadce4acf96898157267adf508e2bb692b16ad905885efcf220f0920e909ba08/default/01b93bef-2e88-49c3-8304-4a39fd36a052" alt="Uploaded Image" id="inserted-img-1771664930539-fx9mur" data-object="true" style="position: absolute; width: 570.283px; max-width: 90%; z-index: 2004; left: 490px; top: 293.5px; transform: translate(-457.122px, -214.224px); height: 252.252px;" data-height-listener-added="true"><div class="img-caption">al Input (Wrist)</div>
+</div>
+<!-- Divider -->
+<i class="fa-solid fa-arrow-right arrow-divider"></i>
+<!-- Output Heatmap -->
+<div class="image-card">
+
+<div class="img-caption">Grad-CAM Activation</div>
+</div>
+</div>
+<!-- Right: Explanatory Text -->
+<div class="text-column">
+<div class="info-block">
+<div class="info-title">
+<div class="icon-box">
+<i class="fa-solid fa-magnifying-glass-chart"></i>
+</div>
+                    Localization &amp; Focus
+                </div>
+<p class="info-text">
+                    Grad-CAM (Gradient-weighted Class Activation Mapping) highlights regions that heavily influence the model's prediction. The <span class="highlight">red "hotspots"</span> confirm the model is focusing on the fractured bone rather than background artifacts.
+                </p>
+</div>
+<div class="info-block">
+<div class="info-title">
+<div class="icon-box">
+<i class="fa-solid fa-user-doctor"></i>
+</div>
+                    Building Clinical Trust
+                </div>
+<p class="info-text">
+                    By visualizing the decision process, radiologists can verify that the AI's reasoning aligns with medical knowledge, transforming the model from a "black box" into a <span class="highlight">transparent assistant</span>.
+                </p>
+</div>
+<div class="info-block">
+<div class="info-title">
+<div class="icon-box">
+<i class="fa-solid fa-bug"></i>
+</div>
+                    Error Analysis
+                </div>
+<p class="info-text">
+                    Visualizations help detect overfitting. For example, if the heatmap focuses on a "metal tag" instead of the bone, it indicates the model is learning the wrong features.
+                </p>
+</div>
+<!-- Activation Legend -->
+<div class="legend-container">
+<div class="legend-bar">
+<div class="lb-1"></div>
+<div class="lb-2"></div>
+<div class="lb-3"></div>
+<div class="lb-4"></div>
+<div class="lb-5"></div>
+</div>
+<div class="legend-labels">
+<span>Low Relevance</span>
+<span>High Activation</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

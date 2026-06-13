@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Introduction - AI in Healthcare</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            position: relative;
+            background-color: #0f172a;
+        }
+        .left-content {
+            flex: 0 0 55%;
+            padding: 80px 60px 80px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 10;
+        }
+        .right-visual {
+            flex: 1;
+            position: relative;
+            background-color: #1e293b;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .right-visual::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("https://page.gensparksite.com/slides_images/7aa0edde08d92d1213e8e3a3771d6c5d.webp");
+            background-size: cover;
+            background-position: center;
+            opacity: 0.4;
+            mix-blend-mode: luminosity;
+        }
+        .right-visual::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+        .section-tag {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #38bdf8;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-tag::before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background-color: #38bdf8;
+        }
+        .main-heading {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 32px;
+            color: #f8fafc;
+        }
+        .highlight-text {
+            color: #38bdf8;
+        }
+        .body-text {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+        .key-points {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        .point-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: #38bdf8;
+            font-size: 20px;
+        }
+        .point-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #e2e8f0;
+            margin: 0 0 4px 0;
+        }
+        .point-content p {
+            font-size: 16px;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.4;
+        }
+        .overlay-graphic {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 100% 100%, rgba(15, 23, 42, 0.8) 0%, transparent 50%);
+            z-index: 2;
+        }
+        .data-card {
+            position: absolute;
+            bottom: 60px;
+            right: 60px;
+            background-color: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            width: 280px;
+            z-index: 5;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .card-stat {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-bottom: 4px;
+            display: block;
+        }
+        .card-label {
+            font-size: 14px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}</style></head>
+<body style="">
+<div class="slide-container">
+<div class="grid-bg"></div>
+<div class="left-content">
+<div class="section-tag">Introduction</div>
+<h1 class="main-heading">
+                Transforming Healthcare with</h1><img src="https://page.gensparksite.com/get_upload_url/fadce4acf96898157267adf508e2bb692b16ad905885efcf220f0920e909ba08/default/53c05c48-0079-4061-97cb-3a4e8674878b" alt="Uploaded Image" id="inserted-img-1771663988756-2r1ztv" data-object="true" style="position: absolute; width: 568.351px; height: 716.768px; max-width: 90%; z-index: 2005; left: 490px; top: 171px; transform: translate(214.674px, -170.096px);" data-height-listener-added="true"><h1 class="main-heading">&nbsp; <span class="highlight-text">Artificial Intelligence</span>
+</h1>
+<p class="body-text">
+                "Artificial Intelligence is rapidly transforming healthcare. Radiographic image analysis using deep learning helps in early fracture detection and reduces the diagnostic burden on radiologists."
+            </p>
+<div class="key-points">
+<div class="point-item">
+<div class="icon-box">
+<i class="fa-solid fa-bone"></i>
+</div>
+<div class="point-content">
+<h3>Early Fracture Detection</h3>
+<p>Identifying subtle musculoskeletal abnormalities that might be missed in initial screenings.</p>
+</div>
+</div>
+<div class="point-item">
+<div class="icon-box">
+<i class="fa-solid fa-user-doctor"></i>
+</div>
+<div class="point-content">
+<h3>Reduced Diagnostic Burden</h3>
+<p>Providing automated decision support to improve radiologist efficiency and consistency.</p>
+</div>
+</div>
+<div class="point-item">
+<div class="icon-box">
+<i class="fa-solid fa-stopwatch"></i>
+</div>
+<div class="point-content">
+<h3>Faster Diagnosis</h3>
+<p>Accelerating the workflow from image acquisition to final report generation.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+</body></html>

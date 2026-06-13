@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Problem Statement - Key Objective</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #0f172a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 120px;
+            text-align: center;
+        }
+        
+        /* Subtle background pattern */
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(rgba(56, 189, 248, 0.05) 2px, transparent 2px);
+            background-size: 32px 32px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Large decorative quote marks */
+        .quote-mark {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 200px;
+            line-height: 1;
+            color: rgba(56, 189, 248, 0.1);
+            position: absolute;
+            z-index: 1;
+        }
+        .quote-left {
+            top: 60px;
+            left: 80px;
+        }
+        .quote-right {
+            bottom: -20px;
+            right: 80px;
+            transform: rotate(180deg);
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #38bdf8;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 40px;
+        }
+
+        .main-statement {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #f8fafc;
+            margin-bottom: 32px;
+        }
+
+        .highlight {
+            color: #38bdf8;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(56, 189, 248, 0.2);
+            z-index: -1;
+        }
+
+        .sub-text {
+            font-size: 24px;
+            font-weight: 300;
+            color: #94a3b8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Decorative focus corners */
+        .focus-corner {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            z-index: 5;
+        }
+        .top-left { top: 60px; left: 60px; border-right: none; border-bottom: none; }
+        .top-right { top: 60px; right: 60px; border-left: none; border-bottom: none; }
+        .bottom-left { bottom: 60px; left: 60px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 60px; right: 60px; border-left: none; border-top: none; }
+
+        /* Pulse animation for AI/Brain concept */
+        .center-graphic {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.03) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+<div class="slide-container">
+<!-- Background Elements -->
+<div class="bg-pattern"></div>
+<div class="center-graphic"></div>
+<!-- Focus Corners -->
+<div class="focus-corner top-left"></div>
+<div class="focus-corner top-right"></div>
+<div class="focus-corner bottom-left"></div>
+<div class="focus-corner bottom-right"></div>
+<!-- Quote Marks -->
+<div class="quote-mark quote-left">“</div>
+<div class="quote-mark quote-right">“</div>
+<div class="content-wrapper">
+<div class="section-label">
+<i class="fa-solid fa-bullseye"></i>
+                Problem Statement
+            </div>
+<h1 class="main-statement">
+                Our goal is to build a <span class="highlight">deep learning model</span> that can classify musculoskeletal X-rays as <span class="highlight">normal or abnormal</span>.
+            </h1>
+<p class="sub-text">
+<i class="fa-solid fa-user-doctor" style="color: #38bdf8; margin-right: 8px;"></i>
+                Assisting doctors in faster diagnosis and reducing interpretation errors in clinical workflows.
+            </p>
+</div>
+</div>
+</body>
+</html>
