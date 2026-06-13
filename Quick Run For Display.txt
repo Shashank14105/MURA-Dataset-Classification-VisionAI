@@ -1,0 +1,5 @@
+Bash Command Quick Opeining :
+
+python -m streamlit run explainer.py
+python -m venv venv
+activate ps 1
