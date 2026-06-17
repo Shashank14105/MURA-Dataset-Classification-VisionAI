@@ -1,7 +1,7 @@
 # 🩻 VisionAI: MURA Dataset Classification & Explainable X-Ray Analysis
 
 <p align="center">
-  <img src="assets/project-banner.jpeg" alt="VisionAI Banner">
+  <img src="assets/project-banner.jpeg" alt="VisionAI Banner" style="width:60%;">
 </p>
 
 <p align="center">
