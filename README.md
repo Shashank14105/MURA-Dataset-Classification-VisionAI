@@ -1,7 +1,7 @@
 # 🩻 VisionAI: MURA Dataset Classification & Explainable X-Ray Analysis
 
 <p align="center">
-  <img src="assets/project-banner.jpeg" alt="VisionAI Banner" style="width:60%;">
+  <img src="assets/project-banner.jpeg" alt="VisionAI Banner" style="width:50%;">
 </p>
 
 <p align="center">
@@ -14,7 +14,6 @@
 
 <p align="center">
   <img src="https://ars.els-cdn.com/content/image/1-s2.0-S0167865525000340-gr5.jpg" width="45%" />
-  <img src="https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-021-88578-w/MediaObjects/41598_2021_88578_Fig1_HTML.jpg" width="45%" />
 </p>
 
 ## 📌 Project Overview
@@ -47,6 +46,10 @@ MURA contains musculoskeletal X-ray studies collected from clinical practice and
   * Wrist
 * **Image Type:** Musculoskeletal Radiographs (X-rays)
 * **Labels:** Normal / Abnormal
+
+<p align="center">
+  <img src="https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-021-88578-w/MediaObjects/41598_2021_88578_Fig1_HTML.jpg" width="45%" />
+</p>
 
 ### Dataset Link
 
