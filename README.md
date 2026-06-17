@@ -1,6 +1,18 @@
 # 🩻 VisionAI: MURA Dataset Classification & Explainable X-Ray Analysis
 
 <p align="center">
+  <img src="assets/project-banner.jpeg" alt="VisionAI Banner">
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.10+-blue">
+  <img src="https://img.shields.io/badge/TensorFlow-2.x-orange">
+  <img src="https://img.shields.io/badge/Streamlit-App-red">
+  <img src="https://img.shields.io/badge/Dataset-MURA-green">
+  <img src="https://img.shields.io/badge/License-MIT-lightgrey">
+</p>
+
+<p align="center">
   <img src="https://ars.els-cdn.com/content/image/1-s2.0-S0167865525000340-gr5.jpg" width="45%" />
   <img src="https://media.springernature.com/lw1200/springer-static/image/art%3A10.1038%2Fs41598-021-88578-w/MediaObjects/41598_2021_88578_Fig1_HTML.jpg" width="45%" />
 </p>
