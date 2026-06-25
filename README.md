@@ -295,6 +295,6 @@ making it an excellent portfolio project for students and researchers interested
 **Shashank K**
 
 AI & Machine Learning Enthusiast
-VisionAI Project Series
+VisionAI Project 
 
 If you found this project useful, consider giving the repository a ⭐.
